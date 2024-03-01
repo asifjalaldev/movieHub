@@ -46,5 +46,7 @@ class StreamPlatformSerializer(serializers.Serializer):
         instance.name=validated_data.get('name', instance.name)
         instance.about=validated_data.get('about', instance.about)
         instance.website=validated_data.get('website', instance.website)
+        instance.save()
+        return instance
     
     
