@@ -8,56 +8,72 @@ from django.http import Http404
 from .serializers import WatchListSerializer, StreamPlatformSerializer
 from rest_framework import mixins, generics
 # Create your views here.
-
-# mixins uses for crud
-class Stream(mixins.ListModelMixin, mixins.CreateModelMixin
-                 ,generics.GenericAPIView):
-    queryset = StreamPlatform.objects.all()
-    serializer_class= StreamPlatformSerializer
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-class StreamDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   generics.GenericAPIView):
+# using already mixed generics classes
+class Stream(generics.ListCreateAPIView):
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+class StreamDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset=StreamPlatform.objects.all()
+    serializer_class=StreamPlatformSerializer
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-    
-class watchListView(mixins.ListModelMixin, mixins.CreateModelMixin,
-                    generics.GenericAPIView):
+class watchListView(generics.ListCreateAPIView):
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-class watchListDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin,
-                          generics.GenericAPIView):
+class watchListDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
     
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+# mixins uses for crud
+# class Stream(mixins.ListModelMixin, mixins.CreateModelMixin
+#                  ,generics.GenericAPIView):
+#     queryset = StreamPlatform.objects.all()
+#     serializer_class= StreamPlatformSerializer
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+    
+# class StreamDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+#                    mixins.DestroyModelMixin,
+#                    generics.GenericAPIView):
+#     queryset=StreamPlatform.objects.all()
+#     serializer_class=StreamPlatformSerializer
 
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+    
+# class watchListView(mixins.ListModelMixin, mixins.CreateModelMixin,
+#                     generics.GenericAPIView):
+#     queryset=WatchList.objects.all()
+#     serializer_class=WatchListSerializer
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+    
+# class watchListDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin,
+#                           generics.GenericAPIView):
+#     queryset=WatchList.objects.all()
+#     serializer_class=WatchListSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
     
 # class base views------------------------
 # class Stream(APIView):
