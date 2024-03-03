@@ -2,6 +2,37 @@ from rest_framework import serializers
 
 from .models import WatchList, StreamPlatform
 
+#  hyperlink serializers------------
+class WatchListSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    A type of `ModelSerializer` that uses hyperlinked relationships instead
+    of primary key relationships. Specifically:
+
+    * A 'url' field is included instead of the 'id' field.
+    * Relationships to other instances are hyperlinks, instead of primary keys.
+    """
+    class Meta:
+        model=WatchList
+        fields='__all__'
+        
+class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model=StreamPlatform
+        fields='__all__'
+    
+
+#  class base view---------------------------------
+
+# class WatchListSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=WatchList
+#         fields='__all__'
+        
+# class StreamPlatformSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=StreamPlatform
+#         fields='__all__'
+    
 # class WatchListSerializer(serializers.Serializer):
 #     id= serializers.IntegerField(read_only=True)
 #     title=serializers.CharField(max_length=50)
@@ -48,16 +79,3 @@ from .models import WatchList, StreamPlatform
 #         instance.website=validated_data.get('website', instance.website)
 #         instance.save()
 #         return instance
-#  class base view---------------------------------
-
-class WatchListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=WatchList
-        fields='__all__'
-        
-class StreamPlatformSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=StreamPlatform
-        fields='__all__'
-    
-    
