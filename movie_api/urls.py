@@ -12,7 +12,7 @@ urlpatterns = [
     path('stream/<int:pk>', views.StreamDetail.as_view(), name='stream-detail'),
     path('list/', views.watchListView.as_view(), name='movie-list'),
     path('list/<int:pk>', views.watchListDetailView.as_view(), name='movie-detail'),
-
+    path('',views.api_root),
     
 
 ]

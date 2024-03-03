@@ -7,8 +7,16 @@ from rest_framework.views import APIView
 from django.http import Http404
 from .serializers import WatchListSerializer, StreamPlatformSerializer
 from rest_framework import mixins, generics
+from rest_framework.reverse import reverse
 # Create your views here.
-# using already mixed generics classes
+# creating entry point of our api-----------
+@api_view(['GET'])
+def api_root(request):
+    return Response({
+        'streamList': reverse('stream-platform', request=request),
+        'watchList': reverse('movie-list', request=request)
+    })
+# using already mixed generics classes-----------
 class Stream(generics.ListCreateAPIView):
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
@@ -25,7 +33,7 @@ class watchListDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
     
-# mixins uses for crud
+# mixins uses for crud---------------------
 # class Stream(mixins.ListModelMixin, mixins.CreateModelMixin
 #                  ,generics.GenericAPIView):
 #     queryset = StreamPlatform.objects.all()
