@@ -13,23 +13,23 @@ from rest_framework.reverse import reverse
 @api_view(['GET'])
 def api_root(request):
     return Response({
-        'streamList': reverse('stream-platform', request=request),
-        'watchList': reverse('movie-list', request=request)
+        'streamList': reverse('Streamplatform-list', request=request),
+        'watchList': reverse('watchlist-list', request=request)
     })
 # using already mixed generics classes-----------
-class Stream(generics.ListCreateAPIView):
+class StreamPlatformList(generics.ListCreateAPIView):
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
 
-class StreamDetail(generics.RetrieveUpdateDestroyAPIView):
+class StreamPlatformDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
 
-class watchListView(generics.ListCreateAPIView):
+class watchListList(generics.ListCreateAPIView):
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
 
-class watchListDetailView(generics.RetrieveUpdateDestroyAPIView):
+class watchListDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
     
