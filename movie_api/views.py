@@ -8,30 +8,58 @@ from django.http import Http404
 from .serializers import WatchListSerializer, StreamPlatformSerializer
 from rest_framework import mixins, generics
 from rest_framework.reverse import reverse
+from rest_framework import viewsets
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
 def api_root(request):
     return Response({
-        'streamList': reverse('stream-platform', request=request),
-        'watchList': reverse('movie-list', request=request)
+        # 'streamList': reverse('streamplatform', request=request),
+        # 'watchList': reverse('movie-list', request=request)
     })
+
+# using veiwsets for crud oprations------------
+class streamPlatformVeiwsets(viewsets.ModelViewSet):
+    
+    # class ModelViewSet(mixins.CreateModelMixin,
+    #                mixins.RetrieveModelMixin,
+    #                mixins.UpdateModelMixin,
+    #                mixins.DestroyModelMixin,
+    #                mixins.ListModelMixin,
+    #                GenericViewSet):
+
+    # A viewset that provides default `create()`, `retrieve()`, `update()`,
+    # `partial_update()`, `destroy()` and `list()` actions.
+
+
+    queryset=StreamPlatform.objects.all()
+    serializer_class=StreamPlatformSerializer
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
+class WatchListViewSet(viewsets.ModelViewSet):
+    queryset=WatchList.objects.all()
+    serializer_class=WatchListSerializer
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
+    
 # using already mixed generics classes-----------
-class Stream(generics.ListCreateAPIView):
-    queryset=StreamPlatform.objects.all()
-    serializer_class=StreamPlatformSerializer
+# class Stream(generics.ListCreateAPIView):
+#     queryset=StreamPlatform.objects.all()
+#     serializer_class=StreamPlatformSerializer
 
-class StreamDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset=StreamPlatform.objects.all()
-    serializer_class=StreamPlatformSerializer
+# class StreamDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=StreamPlatform.objects.all()
+#     serializer_class=StreamPlatformSerializer
 
-class watchListView(generics.ListCreateAPIView):
-    queryset=WatchList.objects.all()
-    serializer_class=WatchListSerializer
+# class watchListView(generics.ListCreateAPIView):
+#     queryset=WatchList.objects.all()
+#     serializer_class=WatchListSerializer
 
-class watchListDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset=WatchList.objects.all()
-    serializer_class=WatchListSerializer
+# class watchListDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=WatchList.objects.all()
+#     serializer_class=WatchListSerializer
     
 # mixins uses for crud---------------------
 # class Stream(mixins.ListModelMixin, mixins.CreateModelMixin
