@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class StreamPlatform(models.Model):
-
+# accessing related watchlists of single streamplatform is reverse relationship as it won't have forignkey. so i will use prefetch_related for optimize query
     name=models.CharField(max_length=50)
     about=models.CharField(max_length=50)
     website=models.URLField(max_length=100)
@@ -12,7 +12,7 @@ class WatchList(models.Model):
 
     title=models.CharField(max_length=50)
     storyLine=models.CharField(max_length=100)
-    platform=models.ForeignKey(StreamPlatform, on_delete=models.CASCADE)
+    platform=models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, related_name='watchlist')
     active=models.BooleanField(default=True)
     created=models.DateTimeField(auto_now_add=True)
     # when only update need use auto_now and when created use auto_now_add

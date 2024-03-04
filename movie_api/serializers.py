@@ -51,11 +51,14 @@ from .models import WatchList, StreamPlatform
 #  class base view---------------------------------
 
 class WatchListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model=WatchList
         fields='__all__'
         
 class StreamPlatformSerializer(serializers.ModelSerializer):
+    # showing watchlist for each particular stream platform
+    watchlist=WatchListSerializer(many=True, read_only=True)
     class Meta:
         model=StreamPlatform
         fields='__all__'

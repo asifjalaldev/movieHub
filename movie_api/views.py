@@ -32,7 +32,8 @@ class streamPlatformVeiwsets(viewsets.ModelViewSet):
     # `partial_update()`, `destroy()` and `list()` actions.
 
 
-    queryset=StreamPlatform.objects.all()
+    # queryset=StreamPlatform.objects.all()
+    queryset=StreamPlatform.objects.prefetch_related('watchlist')
     serializer_class=StreamPlatformSerializer
 
     def perform_create(self, serializer):
