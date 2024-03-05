@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 router=DefaultRouter()
 router.register(r'streamplatforms', views.streamPlatformVeiwsets, basename='streamplatform')
 router.register(r'watchlists', views.WatchListViewSet, basename='watchlist')
-
+# router.register(r'')
 urlpatterns = [
     # path('list/', views.movie_list, name='movie-list'),
     # path('list/<int:pk>', views.movie_detail, name='movie-detail'),
@@ -20,6 +20,9 @@ urlpatterns = [
     # path('watchList/', views.watchListList.as_view(), name='watchlist-list'),
     # path('watchList/<int:pk>', views.watchListDetail.as_view(), name='watchlist-detail'),
     # path('',views.api_root),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    # path('review/', views.ReviewListView.as_view(), name='Review-list'),
+    # path('review/<int:pk>', views.ReviewListDetailView.as_view(), name='Review-detail'),
+    path('watchlists/<int:pk>/review', views.ReviewListView.as_view(), name='Review-list')
 
 ]
