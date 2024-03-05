@@ -50,12 +50,37 @@ from .models import WatchList, StreamPlatform
 #         return instance
 #  class base view---------------------------------
 
+def checkLen(value):
+    """
+    this method is reusable validator. if we want a same validation logic for multiple models and fields
+    then instead of specifying validate_filedName methods for each one, this approach is amazing.
+    define single time and use multiple time 
+    """
+    if len(value) <3:
+        raise serializers.ValidationError('filed value too short')
+    return value
+
 class WatchListSerializer(serializers.ModelSerializer):
+    # if we need to validate multiple fields at once then we should use validate func which take data dictionary 
+    # data {'fieldName' : 'value',. . .}
+    title=serializers.CharField(validators=[checkLen])
+    
+    def validate(self, data):
+        if data['title']== data['storyLine']:
+            raise serializers.ValidationError('title should not be same as storyLine')
+        return data
     class Meta:
         model=WatchList
         fields='__all__'
-        
+
 class StreamPlatformSerializer(serializers.ModelSerializer):
+       # to validate single field use validate_fieldName as func
+    # def validate_name(self, value):
+    #     if len(value)< 3:
+    #         raise serializers.ValidationError('name is too short')
+    #     return value
+    """using reusable validator func instead of above field_validate method"""
+    name=serializers.CharField(validators=[checkLen])
     class Meta:
         model=StreamPlatform
         fields='__all__'
