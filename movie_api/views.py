@@ -2,10 +2,10 @@ from django.shortcuts import render, HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from .models import WatchList, StreamPlatform
+from .models import WatchList, StreamPlatform, Review
 from rest_framework.views import APIView
 from django.http import Http404
-from .serializers import WatchListSerializer, StreamPlatformSerializer
+from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from rest_framework import mixins, generics
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
@@ -44,6 +44,17 @@ class WatchListViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         return super().perform_create(serializer)
     
+class ReviewListView(generics.ListAPIView):
+    queryset=Review.objects.all()
+    serializer_class=ReviewSerializer
+    def get_queryset(self):
+        pk=self.kwargs['pk']
+        return Review.objects.filter(watchList=pk)
+    
+class ReviewListDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset=Review.objects.all()
+    serializer_class=ReviewSerializer
+
 # using already mixed generics classes-----------
 # class Stream(generics.ListCreateAPIView):
 #     queryset=StreamPlatform.objects.all()

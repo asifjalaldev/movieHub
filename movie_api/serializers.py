@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import WatchList, StreamPlatform
+from .models import WatchList, StreamPlatform, Review
 
 # class WatchListSerializer(serializers.Serializer):
 #     id= serializers.IntegerField(read_only=True)
@@ -85,4 +85,8 @@ class StreamPlatformSerializer(serializers.ModelSerializer):
         model=StreamPlatform
         fields='__all__'
     
-    
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Review
+        fields='__all__'
