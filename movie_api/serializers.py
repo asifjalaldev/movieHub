@@ -60,6 +60,7 @@ def checkLen(value):
         raise serializers.ValidationError('filed value too short')
     return value
 
+
 class WatchListSerializer(serializers.ModelSerializer):
     # if we need to validate multiple fields at once then we should use validate func which take data dictionary 
     # data {'fieldName' : 'value',. . .}
@@ -86,7 +87,8 @@ class StreamPlatformSerializer(serializers.ModelSerializer):
         fields='__all__'
     
 class ReviewSerializer(serializers.ModelSerializer):
-
+    user=serializers.StringRelatedField(read_only=True)
+    
     class Meta:
         model=Review
         fields='__all__'
