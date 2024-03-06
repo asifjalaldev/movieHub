@@ -50,6 +50,15 @@ class ReviewListView(generics.ListAPIView):
     def get_queryset(self):
         pk=self.kwargs['pk']
         return Review.objects.filter(watchList=pk)
+class ReviewCreateView(generics.CreateAPIView):
+    queryset=Review.objects.all()
+    serializer_class=ReviewSerializer
+    def perform_create(self, serializer):
+        pk=self.kwargs['pk']
+        movie=WatchList.objects.get(id=pk)
+        serializer.save(watchList=movie)
+        # return super().perform_create(serializer)
+    
     
 class ReviewListDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Review.objects.all()
