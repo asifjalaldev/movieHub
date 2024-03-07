@@ -50,7 +50,7 @@ class ReviewListView(generics.ListAPIView):
     serializer_class=ReviewSerializer
     def get_queryset(self):
         pk=self.kwargs['pk']
-        return Review.objects.filter(watchList=pk)
+        return Review.objects.select_related('watchList').filter(watchList=pk)
 class ReviewCreateView(generics.CreateAPIView):
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
