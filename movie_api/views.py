@@ -9,6 +9,7 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSe
 from rest_framework import mixins, generics
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
+from rest_framework.serializers import ValidationError
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
@@ -56,7 +57,12 @@ class ReviewCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         pk=self.kwargs['pk']
         movie=WatchList.objects.get(id=pk)
-        serializer.save(watchList=movie)
+        reviewed=Review.objects.get(user=self.request.user, watchList=movie)
+        if reviewed:
+            print(f'--------------{movie.title} already reviewed by {self.request.user.username}')
+            raise ValidationError(f'{movie.title} already reviewed by {self.request.user.username}')
+        else:
+            serializer.save(watchList=movie)
         # return super().perform_create(serializer)
     
     
