@@ -11,9 +11,12 @@ from rest_framework.reverse import reverse
 from rest_framework import viewsets
 from rest_framework.serializers import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import permission_classes
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_root(request):
     return Response({
         # 'streamList': reverse('streamplatform', request=request),
@@ -40,6 +43,7 @@ class streamPlatformVeiwsets(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         return super().perform_create(serializer)
 class WatchListViewSet(viewsets.ModelViewSet):
+    permission_classes=[IsAuthenticatedOrReadOnly]
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
 
@@ -47,12 +51,14 @@ class WatchListViewSet(viewsets.ModelViewSet):
         return super().perform_create(serializer)
     
 class ReviewListView(generics.ListAPIView):
+    permission_classes=[IsAuthenticatedOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
     def get_queryset(self):
         pk=self.kwargs['pk']
         return Review.objects.filter(watchList=pk)
 class ReviewCreateView(generics.CreateAPIView):
+    permission_classes=[IsAuthenticatedOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
     def perform_create(self, serializer):
