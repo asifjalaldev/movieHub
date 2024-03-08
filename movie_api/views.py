@@ -10,6 +10,7 @@ from rest_framework import mixins, generics
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
 from rest_framework.serializers import ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
@@ -56,8 +57,8 @@ class ReviewCreateView(generics.CreateAPIView):
     serializer_class=ReviewSerializer
     def perform_create(self, serializer):
         pk=self.kwargs['pk']
-        movie=WatchList.objects.get(id=pk)
-        reviewed=Review.objects.get(user=self.request.user, watchList=movie)
+        movie=WatchList.objects.filter(id=pk).first()
+        reviewed=Review.objects.filter(user=self.request.user, watchList=movie).first()
         if reviewed:
             print(f'--------------{movie.title} already reviewed by {self.request.user.username}')
             raise ValidationError(f'{movie.title} already reviewed by {self.request.user.username}')
