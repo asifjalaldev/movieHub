@@ -13,6 +13,7 @@ from rest_framework.serializers import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
+from .permissions import CustomReviewUserOrReadOnly
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
@@ -58,10 +59,11 @@ class ReviewListView(generics.ListAPIView):
         pk=self.kwargs['pk']
         return Review.objects.filter(watchList=pk)
 class ReviewCreateView(generics.CreateAPIView):
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # permission_classes=[CustomAdminOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
     def perform_create(self, serializer):
+        serializer.save(user=self.request.user) # explicitly set user from request
         pk=self.kwargs['pk']
         movie=WatchList.objects.filter(id=pk).first()
         reviewed=Review.objects.filter(user=self.request.user, watchList=movie).first()
@@ -74,6 +76,7 @@ class ReviewCreateView(generics.CreateAPIView):
     
     
 class ReviewListDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes=[CustomReviewUserOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
 
