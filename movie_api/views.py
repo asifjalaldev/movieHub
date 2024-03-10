@@ -14,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
 from .permissions import CustomReviewUserOrReadOnly
+
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
@@ -65,13 +66,22 @@ class ReviewCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user) # explicitly set user from request
         pk=self.kwargs['pk']
-        movie=WatchList.objects.filter(id=pk).first()
+        movie=WatchList.objects.get(id=pk)
         reviewed=Review.objects.filter(user=self.request.user, watchList=movie).first()
         if reviewed:
             print(f'--------------{movie.title} already reviewed by {self.request.user.username}')
             raise ValidationError(f'{movie.title} already reviewed by {self.request.user.username}')
         else:
             serializer.save(watchList=movie)
+        if movie.number_rating == 0:
+            movie.avg_rating=serializer.validated_data['rating']
+        else:
+            movie.avg_rating=(movie.avg_rating + serializer.validated_data['rating'])/2
+        movie.number_rating+=1
+        movie.save()
+        print('movie no of rating', movie.number_rating)
+        print('movie avg rating', movie.avg_rating)
+        serializer.save(WatchList=movie, user=self.request.user)
         # return super().perform_create(serializer)
     
     

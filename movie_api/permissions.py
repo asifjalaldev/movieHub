@@ -3,14 +3,6 @@ from rest_framework import permissions
 
 class CustomReviewUserOrReadOnly(permissions.BasePermission):
 
-    message='admin or read only'
-
-    # def has_permission(self, request, view):
-    #     if request.method=='GET':
-    #         return request.user.is_authenticated
-    #     else:
-    #         return request.user.is_staff
-
     def has_object_permission(self, request, view, obj):
         if request.method=='GET':
             return True
