@@ -27,26 +27,19 @@ def api_root(request):
 
 # using veiwsets for crud oprations------------
 class streamPlatformVeiwsets(viewsets.ModelViewSet):
-    
-    # class ModelViewSet(mixins.CreateModelMixin,
-    #                mixins.RetrieveModelMixin,
-    #                mixins.UpdateModelMixin,
-    #                mixins.DestroyModelMixin,
-    #                mixins.ListModelMixin,
-    #                GenericViewSet):
 
     # A viewset that provides default `create()`, `retrieve()`, `update()`,
     # `partial_update()`, `destroy()` and `list()` actions.
-
-
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
     def perform_create(self, serializer):
         return super().perform_create(serializer)
+    
 class WatchListViewSet(viewsets.ModelViewSet):
     permission_classes=[IsAuthenticatedOrReadOnly]
+    authentication_classes=[JWTAuthentication]
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
 
