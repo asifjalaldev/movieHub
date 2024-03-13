@@ -13,3 +13,4 @@ class CustomReviewUserOrReadOnly(permissions.BasePermission):
                 return True
             else: 
                 return False
+        # return super().has_object_permission(request, view, obj)
