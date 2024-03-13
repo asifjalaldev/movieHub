@@ -2,7 +2,6 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from django.contrib.auth.models import User
 # using routers for viewsets
 router=DefaultRouter()
 router.register(r'streamplatforms', views.streamPlatformVeiwsets, basename='streamplatform')
@@ -30,7 +29,7 @@ urlpatterns = [
 
 
     path('watchlists/review/<int:pk>', views.ReviewListDetailView.as_view(), name='review-detail'),
-    
+
 
 
 ]
