@@ -29,6 +29,7 @@ def api_root(request):
 # using veiwsets for crud oprations------------
 class streamPlatformVeiwsets(viewsets.ModelViewSet):
 
+
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
     authentication_classes=[JWTAuthentication]
