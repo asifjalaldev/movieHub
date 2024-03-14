@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthentic
 from rest_framework.decorators import permission_classes
 from .permissions import CustomReviewUserOrReadOnly
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.throttling import UserRateThrottle
 # Create your views here.
 # creating entry point of our api-----------
 @api_view(['GET'])
@@ -27,26 +28,18 @@ def api_root(request):
 
 # using veiwsets for crud oprations------------
 class streamPlatformVeiwsets(viewsets.ModelViewSet):
-    
-    # class ModelViewSet(mixins.CreateModelMixin,
-    #                mixins.RetrieveModelMixin,
-    #                mixins.UpdateModelMixin,
-    #                mixins.DestroyModelMixin,
-    #                mixins.ListModelMixin,
-    #                GenericViewSet):
-
-    # A viewset that provides default `create()`, `retrieve()`, `update()`,
-    # `partial_update()`, `destroy()` and `list()` actions.
-
 
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
+    throttle_classes=[UserRateThrottle]
     def perform_create(self, serializer):
         return super().perform_create(serializer)
+    
 class WatchListViewSet(viewsets.ModelViewSet):
     permission_classes=[IsAuthenticatedOrReadOnly]
+    authentication_classes=[JWTAuthentication]
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
 
