@@ -31,8 +31,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie 
 class streamPlatformVeiwsets(viewsets.ModelViewSet):
-
-    
+# conflict resolve
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
     # authentication_classes=[JWTAuthentication]
