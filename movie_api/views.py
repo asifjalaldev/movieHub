@@ -27,14 +27,20 @@ def api_root(request):
     })
 
 # using veiwsets for crud oprations------------
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie 
 class streamPlatformVeiwsets(viewsets.ModelViewSet):
-
-
+# conflict resolve
     queryset=StreamPlatform.objects.all()
     serializer_class=StreamPlatformSerializer
-    authentication_classes=[JWTAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[JWTAuthentication]
+    # permission_classes=[IsAuthenticated]
     throttle_classes=[UserRateThrottle]
+
+    @method_decorator(cache_page(60 * 60 * 2),'dispatch')
+    @method_decorator(vary_on_cookie,'dispatch')
+
     def perform_create(self, serializer):
         return super().perform_create(serializer)
     
@@ -51,11 +57,19 @@ class ReviewListView(generics.ListAPIView):
     permission_classes=[IsAuthenticatedOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
+
     def get_queryset(self):
         pk=self.kwargs['pk']
         return Review.objects.filter(watchList=pk)
+    
+    @method_decorator(cache_page(60 * 60 * 2),'dispatch')
+    @method_decorator(vary_on_cookie,'dispatch')
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
 class ReviewCreateView(generics.CreateAPIView):
     # permission_classes=[CustomAdminOrReadOnly]
+    
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
     def perform_create(self, serializer):

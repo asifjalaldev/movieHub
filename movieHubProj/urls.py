@@ -14,5 +14,6 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-        # eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEwMTc1MTgxLCJpYXQiOjE3MTAxNzQ4ODEsImp0aSI6IjkzYjRkYjU4N2NhNTRmOGRhMzVkYTRjMjAzZmYxY2E5IiwidXNlcl9pZCI6Mn0.2H5loI_vtph0D-ZQKghKo-GZ7e2pidZubKSCw7wVkFM
-]
+    path("__debug__/", include("debug_toolbar.urls")),
+        
+        ]
