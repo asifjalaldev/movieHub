@@ -34,3 +34,4 @@ urlpatterns = [
 
 
 ]
+print('url are called')
