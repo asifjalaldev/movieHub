@@ -1,0 +1,10 @@
+asgiref
+Django
+djangorestframework
+djangorestframework-simplejwt
+gunicorn
+packaging
+PyJWT
+pytz
+sqlparse
+tzdata
