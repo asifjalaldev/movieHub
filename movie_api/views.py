@@ -45,7 +45,7 @@ class streamPlatformVeiwsets(viewsets.ModelViewSet):
         return super().perform_create(serializer)
     
 class WatchListViewSet(viewsets.ModelViewSet):
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
     authentication_classes=[JWTAuthentication]
     queryset=WatchList.objects.all()
     serializer_class=WatchListSerializer
@@ -54,14 +54,14 @@ class WatchListViewSet(viewsets.ModelViewSet):
         return super().perform_create(serializer)
     
 class ReviewListView(generics.ListAPIView):
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
     queryset=Review.objects.all()
     serializer_class=ReviewSerializer
 
     def get_queryset(self):
         pk=self.kwargs['pk']
         return Review.objects.filter(watchList=pk)
-    
+    # store cache for 2 hours
     @method_decorator(cache_page(60 * 60 * 2),'dispatch')
     @method_decorator(vary_on_cookie,'dispatch')
     def get(self, request, *args, **kwargs):
